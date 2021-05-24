@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="marginSize">16dp</dimen>
+    <dimen name="navBarHeight">56dp</dimen>
+    <dimen name="navBarTitleBarSize">22dp</dimen>
+    <dimen name="sp18">18sp</dimen>
+    <dimen name="inputViewHeight">40dp</dimen>
+</resources>
