@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import com.fcy.musicplayer.R
+import com.fcy.musicplayer.util.LoggerUtil
 
 /**
  *     1. input_icon:图标
@@ -58,6 +59,8 @@ class InputView(context: Context, attributeSet: AttributeSet?) :
     /**
      * 返回输入内容
      */
-    fun getInput(): String = mInput.text.toString().trim()
+    fun getInput(): String {
+        return mInput.text.toString().trim()
+    }
 
 }

@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/navBarHeight"
-    android:alpha="0.9"
-    android:background="@color/purple_200"
-    android:orientation="horizontal"
-    android:paddingLeft="@dimen/marginSize"
-    android:paddingRight="@dimen/marginSize">
 
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_baseline_arrow_back_ios_24" />
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/navBarHeight"
+        android:alpha="0.9"
+        android:background="@color/purple_200"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/marginSize"
+        android:paddingRight="@dimen/marginSize">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="慕课音乐"
-        android:textColor="@color/white"
-        android:textSize="@dimen/navBarTitleBarSize" />
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_baseline_arrow_back_ios_24" />
 
-    <ImageView
-        android:id="@+id/iv_me"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|center_vertical"
-        android:src="@drawable/ic_baseline_perm_identity_24" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="慕课音乐"
+            android:textColor="@color/white"
+            android:textSize="@dimen/navBarTitleBarSize" />
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/iv_me"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:src="@drawable/ic_baseline_perm_identity_24" />
+
+    </FrameLayout>
