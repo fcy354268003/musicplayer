@@ -30,7 +30,7 @@ open class BaseActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = resources.getColor(color, theme)
-        val navBar = findViewById<FrameLayout>(R.id.navBar)
+        val navBar = findViewById<FrameLayout>(R.id.navBar) ?: return
         navBar.setBackgroundColor(resources.getColor(color, theme))
         if (!canGoBack)
             navBar.findViewById<ImageView>(R.id.iv_back).visibility =

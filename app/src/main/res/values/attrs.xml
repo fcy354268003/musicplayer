@@ -6,4 +6,13 @@
         <attr name="input_hint" format="string" />
         <attr name="input_isPassword" format="boolean" />
     </declare-styleable>
+    <declare-styleable name="MusicPlayerAlbum">
+        <!--        宽度          -->
+        <attr name="boundary_width" format="integer" />
+        <attr name="boundary_color" format="color" />
+        <!--        圆形图片大小      -->
+        <attr name="radius" format="integer" />
+        <attr name="pic_src" format="reference" />
+        <attr name="src_url" format="string" />
+    </declare-styleable>
 </resources>

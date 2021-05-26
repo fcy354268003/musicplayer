@@ -9,6 +9,8 @@ package com.fcy.musicplayer.util
 class InputCheckUtil {
     companion object {
         fun isPhoneNumberStandard(text: String?): Int {
+            if (LoggerUtil.DEBUG)
+                return 2
             LoggerUtil.d("$text  ========")
             if (text == null)
                 return 0
