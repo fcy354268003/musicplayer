@@ -3,6 +3,7 @@
     package="com.fcy.musicplayer">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".base.MyApplication"
         android:allowBackup="true"
@@ -11,12 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        <activity android:name=".PlayMusicActivity"></activity>
-        <activity android:name=".AlbumActivity" />
-        <activity android:name=".MeActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".PlayMusicActivity" />
         <activity
-            android:name=".LogInActivity"
-            android:launchMode="singleTop">
+            android:name=".AlbumActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name=".MeActivity" />
+        <activity android:name=".LogInActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

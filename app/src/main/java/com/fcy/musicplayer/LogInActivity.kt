@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.fcy.musicplayer.base.BaseActivity
 import com.fcy.musicplayer.databinding.ActivityLogInBinding
+import com.fcy.musicplayer.helps.UserHelp
 import com.fcy.musicplayer.util.LoggerUtil
 import com.fcy.musicplayer.viewmodel.LogInViewModel
 
@@ -20,11 +21,16 @@ class LogInActivity : BaseActivity() {
     private lateinit var mViewModel: LogInViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        LoggerUtil.d("on create")
         binding = DataBindingUtil.setContentView(this, R.layout.activity_log_in)
         binding.lifecycleOwner = this
         binding.context = this
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        LoggerUtil.d("onNewIntent")
+    }
     override fun onContentChanged() {
         super.onContentChanged()
         initToolBar(canGoBack = false, showMe = false, title = "登录")
@@ -37,18 +43,11 @@ class LogInActivity : BaseActivity() {
     fun onLoginClick() {
         mViewModel.phone.value = binding.inputPhone.getInput()
         mViewModel.password.value = binding.inputPasswd.getInput()
-        LoggerUtil.d(binding.inputPhone.getInput())
-        val result = mViewModel.checkPhone()
-        Toast.makeText(this, result.first, Toast.LENGTH_SHORT).show()
-        LoggerUtil.d(result.second)
-        if (result.second == 2)
-            toMain()
+
+        UserHelp.instance.login(this,mViewModel)
     }
 
-    private fun toMain() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-    }
+
 
 
 }
