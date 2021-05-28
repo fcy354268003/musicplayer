@@ -28,6 +28,11 @@ class MainActivity : BaseActivity() {
         initToolBar(canGoBack = false, showMe = true, title = "慕课音乐")
         initRecommend()
         initHot()
+        onMeClick = {
+            Intent(this,MeActivity::class.java).apply {
+                startActivity(this)
+            }
+        }
     }
 
     /**

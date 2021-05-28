@@ -1,5 +1,6 @@
 package com.fcy.musicplayer
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -31,6 +32,7 @@ class LogInActivity : BaseActivity() {
         super.onNewIntent(intent)
         LoggerUtil.d("onNewIntent")
     }
+
     override fun onContentChanged() {
         super.onContentChanged()
         initToolBar(canGoBack = false, showMe = false, title = "登录")
@@ -43,11 +45,23 @@ class LogInActivity : BaseActivity() {
     fun onLoginClick() {
         mViewModel.phone.value = binding.inputPhone.getInput()
         mViewModel.password.value = binding.inputPasswd.getInput()
-
-        UserHelp.instance.login(this,mViewModel)
+        if (UserHelp.instance.login(this, mViewModel))
+            toMain()
     }
 
+    /**
+     * 跳转到注册界面
+     */
+    fun toRegister(v: View) {
+        Intent(this, RegisterActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
 
+    private fun toMain() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+    }
 
 
 }

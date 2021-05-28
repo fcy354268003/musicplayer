@@ -26,19 +26,5 @@ class InputCheckUtil {
             return 2
         }
 
-        fun register(context: Context, phone: String, pass1: String, pass2: String): Boolean {
-            if (isPhoneNumberStandard(phone) != 2) {
-                Toast.makeText(context, "手机号不符合规范", Toast.LENGTH_SHORT).show()
-                return false
-            }
-            if (!TextUtils.equals(pass1, pass2)) {
-                Toast.makeText(context, "两次密码输入不一致", Toast.LENGTH_SHORT).show()
-                return false
-            }
-            // TODO 检查是否已存在该用户
-
-            Toast.makeText(context, "注册成功", Toast.LENGTH_SHORT).show()
-            return true
-        }
     }
 }

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<data>
-   <variable
-       name="context"
-       type="com.fcy.musicplayer.LogInActivity" />
-</data>
+
+    <data>
+
+        <variable
+            name="context"
+            type="com.fcy.musicplayer.LogInActivity" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -83,10 +86,11 @@
             app:layout_constraintGuide_percent="0.45" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
+            android:onClick="toRegister"
             android:text="@string/register"
             android:textColor="@color/purple_200"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
@@ -109,8 +113,8 @@
             android:backgroundTint="@color/purple_200"
             android:elevation="5dp"
             android:foreground="?attr/selectableItemBackground"
-            android:text="登  录"
             android:onClick="@{() -> context.onLoginClick()}"
+            android:text="登  录"
             android:textColor="@color/white"
             android:textSize="@dimen/sp18"
             app:layout_constraintEnd_toEndOf="parent"
