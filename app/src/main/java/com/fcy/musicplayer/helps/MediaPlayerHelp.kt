@@ -3,6 +3,7 @@ package com.fcy.musicplayer.helps
 import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
+import com.fcy.musicplayer.db.entity.Music
 
 /**
  * 全局单例播放器
@@ -11,7 +12,7 @@ class MediaPlayerHelp private constructor() {
     private lateinit var context: Context
     private var mediaPlayer: MediaPlayer = MediaPlayer()
     private val prepareCallback: MediaPlayer.OnPreparedListener? = null
-    var path: String? = null
+    var music: Music? = null
         private set
 
     companion object {
@@ -35,24 +36,26 @@ class MediaPlayerHelp private constructor() {
         mediaPlayer.start()
     }
 
-    fun setPath(path: String?, context: Context) {
-        if (path == null)
+    fun setMusic(music: Music?, context: Context) {
+        if (music == null)
             return
-        if (this.path == path) {
+        if (this.music == music) {
             mediaPlayer.reset()
         } else {
+            mediaPlayer.stop()
+            mediaPlayer.release()
             mediaPlayer = MediaPlayer()
         }
-        this.path = path
-        mediaPlayer.setDataSource(context, Uri.parse(path))
+        this.music = music
+        mediaPlayer.setDataSource(context, Uri.parse(music.path))
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener { mediaPlayer.start() }
     }
 
-    public fun setPath(id: Int, context: Context) {
+    fun setMusic(id: Int, context: Context) {
         if (mediaPlayer.isPlaying)
             mediaPlayer.reset()
-        this.path = id.toString()
+        this.music = null
         mediaPlayer = MediaPlayer.create(context, id)
         mediaPlayer.start()
     }
