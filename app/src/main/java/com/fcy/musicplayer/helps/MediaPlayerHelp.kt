@@ -21,19 +21,28 @@ class MediaPlayerHelp private constructor() {
         }
     }
 
-    public fun start() {
+    fun start() {
         if (mediaPlayer.isPlaying)
             return
         mediaPlayer.start()
     }
 
-    public fun pause() {
+    fun pause() {
         mediaPlayer.pause()
     }
 
-    public fun setPath(path: String, context: Context) {
-        if (mediaPlayer.isPlaying)
+    fun continuePlay() {
+        mediaPlayer.start()
+    }
+
+    fun setPath(path: String?, context: Context) {
+        if (path == null)
+            return
+        if (this.path == path) {
             mediaPlayer.reset()
+        } else {
+            mediaPlayer = MediaPlayer()
+        }
         this.path = path
         mediaPlayer.setDataSource(context, Uri.parse(path))
         mediaPlayer.prepareAsync()

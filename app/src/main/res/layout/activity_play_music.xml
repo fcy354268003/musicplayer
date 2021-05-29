@@ -55,6 +55,7 @@
         android:id="@+id/civ_album"
         android:layout_width="300dp"
         android:layout_height="300dp"
+        android:onClick="onAlbumClick"
         android:scaleType="centerCrop"
         android:src="@drawable/test"
         app:civ_border_color="@color/black"

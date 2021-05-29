@@ -16,8 +16,8 @@ class WelcomeActivity : AppCompatActivity() {
             } else {
                 Intent(this, LogInActivity::class.java)
             }
-            startActivity(intent)
             finish()
+            startActivity(intent)
         }, 1000)
     }
 }

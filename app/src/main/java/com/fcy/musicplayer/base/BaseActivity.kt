@@ -1,6 +1,7 @@
 package com.fcy.musicplayer.base
 
 
+import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.FrameLayout
@@ -14,8 +15,21 @@ open class BaseActivity : AppCompatActivity() {
 
     var onMeClick: () -> Unit = {}
     var onBackClick: () -> Unit = {}
+
     override fun onContentChanged() {
         initViewModel()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initArgs()
+    }
+
+    /**
+     * 初始化intent附带的参数
+     */
+    open fun initArgs() {
+
     }
 
     open fun initViewModel() {

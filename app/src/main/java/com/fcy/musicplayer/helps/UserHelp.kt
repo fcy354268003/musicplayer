@@ -15,7 +15,6 @@ import com.fcy.musicplayer.widget.InputView
 
 class UserHelp private constructor() {
     private var phone: String? = null
-
     companion object {
         @JvmStatic
         val instance: UserHelp by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
@@ -45,10 +44,10 @@ class UserHelp private constructor() {
             return false
         }
 
-        //TODO 通过数据库查询用户状态
         if (LocalHelper.instance.validUserInfo(viewModel)) {
             SPUtil.saveUserInfo(context, viewModel.phone.value!!)
             Toast.makeText(context, result.first, Toast.LENGTH_SHORT).show()
+            LocalHelper.instance.saveMusicData(context)
             return true
         } else {
             Toast.makeText(context, "用户名或者密码错误", Toast.LENGTH_SHORT).show()
@@ -66,6 +65,7 @@ class UserHelp private constructor() {
             Toast.makeText(context, "发生错误", Toast.LENGTH_SHORT).show()
             return false
         }
+        LocalHelper.instance.deleteMusicData()
         return true
     }
 
@@ -85,12 +85,6 @@ class UserHelp private constructor() {
             return false
         LocalHelper.instance.insertUser(phone, pw1)
         return true
-
     }
-
-    private fun toLogIn() {
-
-    }
-
 
 }
