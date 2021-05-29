@@ -37,15 +37,13 @@ class MediaPlayerHelp private constructor() {
     }
 
     fun setMusic(music: Music?, context: Context) {
-        if (music == null)
+        if (music == null || this.music == music)
             return
-        if (this.music == music) {
-            mediaPlayer.reset()
-        } else {
-            mediaPlayer.stop()
-            mediaPlayer.release()
-            mediaPlayer = MediaPlayer()
-        }
+
+        mediaPlayer.stop()
+        mediaPlayer.release()
+        mediaPlayer = MediaPlayer()
+
         this.music = music
         mediaPlayer.setDataSource(context, Uri.parse(music.path))
         mediaPlayer.prepareAsync()
