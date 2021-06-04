@@ -22,10 +22,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".PlayMusicActivity" />
+        <activity
+            android:name=".PlayMusicActivity"
+            android:launchMode="singleTop" />
         <activity android:name=".AlbumActivity" />
         <activity android:name=".MeActivity" />
-        <activity android:name=".LogInActivity"/>
+        <activity android:name=".LogInActivity" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleInstance" />

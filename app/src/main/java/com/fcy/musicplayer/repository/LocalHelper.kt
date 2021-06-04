@@ -18,6 +18,7 @@ import com.fcy.musicplayer.viewmodel.LogInViewModel
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class LocalHelper private constructor() {
@@ -26,6 +27,7 @@ class LocalHelper private constructor() {
     private val userDao: UserDao
     private val musicDao: MusicDao
     private val albumDao: AlbumDao
+    private val threadPool: ExecutorService = Executors.newCachedThreadPool()
 
     init {
         Room.databaseBuilder(
@@ -81,7 +83,7 @@ class LocalHelper private constructor() {
      * 将json数据转化为对象并存储在数据库
      */
     fun saveMusicData(context: Context) {
-        Thread {
+        threadPool.execute {
             val sb = StringBuilder()
             context.assets?.open(PATH_MUSIC_DATA)?.use {
                 BufferedReader(InputStreamReader(it)).apply {
@@ -96,7 +98,7 @@ class LocalHelper private constructor() {
             val musicSource = gson.fromJson(sb.toString(), MusicSource::class.java)
             musicDao.saveMusic(musicSource.hot)
             albumDao.saveAlbum(musicSource.album)
-        }.start()
+        }
 
     }
 
@@ -104,32 +106,32 @@ class LocalHelper private constructor() {
      * 清除数据库中的数据
      */
     fun deleteMusicData() {
-        Thread {
+        threadPool.execute {
             musicDao.clearAll()
             albumDao.clearAll()
-        }.start()
+        }
     }
 
     /**
      * 异步查询专辑信息通过LiveData，回调显示数据
      */
     fun loadAlbumAsync() {
-        Thread {
+        threadPool.execute {
             val with: MutableLiveData<List<Album>> =
                 LiveDataManager.with<List<Album>>("album") as MutableLiveData<List<Album>>
             with.postValue(albumDao.getAll())
-        }.start()
+        }
     }
 
     /**
      * 异步查询歌曲信息通过LiveData，回调显示数据
      */
     fun loadMusicAsync() {
-        Thread {
+        threadPool.execute {
             val with: MutableLiveData<List<Music>> =
                 LiveDataManager.with<List<Music>>("music") as MutableLiveData<List<Music>>
             with.postValue(musicDao.load20())
-        }.start()
+        }
     }
 
     fun loadMusicById(id: String): Music? = musicDao.loadById(id)
