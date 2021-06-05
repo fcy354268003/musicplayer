@@ -1,6 +1,7 @@
 package com.fcy.musicplayer.base
 
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import com.fcy.musicplayer.R
+import com.fcy.musicplayer.util.BarUtils
 
 open class BaseActivity : AppCompatActivity() {
 

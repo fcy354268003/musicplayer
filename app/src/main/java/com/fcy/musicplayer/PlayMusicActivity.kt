@@ -1,8 +1,8 @@
 package com.fcy.musicplayer
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -11,16 +11,18 @@ import com.fcy.musicplayer.databinding.ActivityPlayMusicBinding
 import com.fcy.musicplayer.db.entity.Music
 import com.fcy.musicplayer.helps.MediaPlayerHelp
 import com.fcy.musicplayer.repository.LocalHelper
+import com.fcy.musicplayer.util.BarUtils
 import com.fcy.musicplayer.util.LoggerUtil
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 class PlayMusicActivity : BaseActivity() {
     private lateinit var mediaPlayerHelp: MediaPlayerHelp
-    private var isPlaying: Boolean = true
     private var id: String? = null
     private var info: Music? = null
     private lateinit var binding: ActivityPlayMusicBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        BarUtils.setStatusBarColor(this, Color.TRANSPARENT)
+        BarUtils.setStatusBarLightMode(this, true)
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
             this,
@@ -28,10 +30,8 @@ class PlayMusicActivity : BaseActivity() {
         )
         playMusic(info)
         onContentInit()
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+
+
         binding.civAlbum.setOnClickListener(mediaPlayerHelp::onAlbumClick)
         lifecycle.addObserver(MediaPlayerHelp.instance)
         binding.musicHelp = mediaPlayerHelp
@@ -74,7 +74,7 @@ class PlayMusicActivity : BaseActivity() {
             .into(binding.civAlbum)
         binding.tvMusicName.text = info?.name
         binding.tvMaker.text = info?.author
-        binding.mrInner.setValue(this)
+        binding.mrInner.setValueInner(this)
     }
 
     override fun initArgs() {
@@ -86,11 +86,9 @@ class PlayMusicActivity : BaseActivity() {
         LoggerUtil.d("$info $id")
     }
 
-
     private fun playMusic(music: Music?) {
         mediaPlayerHelp = MediaPlayerHelp.instance.apply {
             setMusic(music, this@PlayMusicActivity, binding)
-            start()
         }
     }
 

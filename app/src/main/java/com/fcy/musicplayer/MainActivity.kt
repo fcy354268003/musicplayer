@@ -1,15 +1,16 @@
 package com.fcy.musicplayer
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.View
-import android.widget.ImageView
+import android.util.DisplayMetrics
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.Observable
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.fcy.musicplayer.base.BaseActivity
@@ -18,15 +19,19 @@ import com.fcy.musicplayer.databinding.ItemHotBinding
 import com.fcy.musicplayer.databinding.ItemRecomendBinding
 import com.fcy.musicplayer.db.entity.Album
 import com.fcy.musicplayer.db.entity.Music
+import com.fcy.musicplayer.helps.MediaPlayerHelp
 import com.fcy.musicplayer.repository.LocalHelper
 import com.fcy.musicplayer.util.LiveDataManager
 import com.fcy.musicplayer.util.LoggerUtil
 import com.fcy.musicplayer.util.MyRecyclerAdapter
 import com.fcy.musicplayer.widget.GridSpaceItemDecoration
+import com.fcy.musicplayer.widget.MusicRegulator
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private var requestManager: RequestManager? = null
+    private var displayMetrics: DisplayMetrics? = DisplayMetrics()
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         LocalHelper.instance.apply {
@@ -41,7 +46,6 @@ class MainActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         onContentInit()
-
     }
 
     /**
@@ -140,6 +144,41 @@ class MainActivity : BaseActivity() {
             }
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        //判断当前是否有歌曲播放 是否显示底部控制框
+        if (MediaPlayerHelp.instance.liveMusic.value != null)
+            initBottomWindow()
+    }
+
+    /**
+     * 拿到屏幕的高度
+     */
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+        }
+    }
+
+    private fun initBottomWindow() {
+        val manager: WindowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val la = WindowManager.LayoutParams().apply {
+            width = WindowManager.LayoutParams.MATCH_PARENT
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            verticalMargin = 0.95f
+        }
+        val musicRegulator = MusicRegulator(this, null).apply {
+            background = ColorDrawable(Color.GRAY)
+            pauseCallback = {
+                MediaPlayerHelp.instance.onAlbumClick(null)
+            }
+            setValueOuter(this@MainActivity)
+        }
+        manager.addView(musicRegulator, la)
     }
 
 }

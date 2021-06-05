@@ -10,8 +10,10 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
+import com.bumptech.glide.Glide
 import com.fcy.musicplayer.R
 import com.fcy.musicplayer.databinding.MusicRegulatorBinding
+import com.fcy.musicplayer.databinding.MusicRegulatorOuterBinding
 import com.fcy.musicplayer.helps.MediaPlayerHelp
 
 /**
@@ -19,36 +21,50 @@ import com.fcy.musicplayer.helps.MediaPlayerHelp
  * MediaPlayerHelp控制其进度条的现实情况
  *      要注意的是 MediaPlayerHelper应该检测Activity的生命周期变化及时去除这个viewGroup的索引
  */
-class MusicRegulator(context: Context, attributeSet: AttributeSet?) :
+open class MusicRegulator(context: Context, attributeSet: AttributeSet?) :
     FrameLayout(context, attributeSet) {
-    var preCallback: () -> Unit = {
-
-    }
+    var preCallback: () -> Unit = {}
     var nextCallback: () -> Unit = {}
     var pauseCallback: () -> Unit = {}
-    private val binding: MusicRegulatorBinding = DataBindingUtil.inflate<MusicRegulatorBinding>(
-        LayoutInflater.from(context),
-        R.layout.music_regulator,
-        this,
-        false
-    ).apply {
-        ivPrevious.setOnClickListener {
-            preCallback.invoke()
+
+    private val binding: MusicRegulatorOuterBinding =
+        DataBindingUtil.inflate<MusicRegulatorOuterBinding>(
+            LayoutInflater.from(context),
+            R.layout.music_regulator_outer,
+            this,
+            false
+        ).apply {
+            ivPrevious.setOnClickListener {
+                preCallback.invoke()
+            }
+            ivNext.setOnClickListener {
+                nextCallback.invoke()
+            }
+            ivPause.setOnClickListener {
+                pauseCallback.invoke()
+            }
         }
-        ivNext.setOnClickListener {
-            nextCallback.invoke()
-        }
-        ivPause.setOnClickListener {
-            pauseCallback.invoke()
-        }
-    }
 
     init {
         addView(binding.root)
     }
 
-    fun setValue(life: LifecycleOwner) {
+    fun setValueInner(life: LifecycleOwner) {
         binding.lifecycleOwner = life
         binding.value = MediaPlayerHelp.instance
     }
+
+    fun setValueOuter(life: LifecycleOwner) {
+        binding.lifecycleOwner = life
+        binding.value = MediaPlayerHelp.instance
+        binding.flOuter.visibility = View.VISIBLE
+        MediaPlayerHelp.instance.liveMusic.observe(life) {
+            Glide.with(this)
+                .load(it.poster)
+                .into(binding.civ)
+            binding.tvMaker.text = it.author
+            binding.tvMusicName.text = it.name
+        }
+    }
+
 }

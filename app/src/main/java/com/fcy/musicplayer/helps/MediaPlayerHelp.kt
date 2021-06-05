@@ -23,7 +23,7 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
     private var binding: ActivityPlayMusicBinding? = null
     private var animator: ObjectAnimator? = null
     val process: MutableLiveData<Int> = MutableLiveData()
-    var music: Music? = null //当前播放音乐
+    val liveMusic: MutableLiveData<Music> = MutableLiveData()//当前播放音乐
     private val delay: Long = 300L // 刷新进度条的时间间隔
 
     companion object {
@@ -40,7 +40,7 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
                 val currentPosition = mediaPlayer.currentPosition
                 process.value = currentPosition * 10000 / duration
                 LoggerUtil.d(process.value)
-                if (binding != null && mediaPlayer.isPlaying) {
+                if (mediaPlayer.isPlaying) {
                     handler.postDelayed(this, delay)
                 }
             }
@@ -63,12 +63,15 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
         mediaPlayer.start()
         isPlaying.value = true
         startLoop()
+        if (animator?.isPaused == true) {
+            animator?.resume()
+        } else animator?.start()
     }
 
     /**
      * 所有暂停相关都要调用 这个方法
      */
-    private fun pause() {
+    fun pause() {
         mediaPlayer.pause()
         isPlaying.value = false
         animator?.pause()
@@ -76,7 +79,6 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
 
     private fun continuePlay() {
         start()
-        animator?.resume()
     }
 
     /**
@@ -93,13 +95,13 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
      */
     fun setMusic(music: Music?, context: Context, binding: ActivityPlayMusicBinding?) {
         this.binding = binding
-        if (music == null || this.music == music)
+        if (music == null || this.liveMusic.value == music)
             return
         mediaPlayer.stop()
         mediaPlayer.release()
         mediaPlayer = MediaPlayer()
 
-        this.music = music
+        liveMusic.value = music
         mediaPlayer.setDataSource(context, Uri.parse(music.path))
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener { start() }
@@ -111,7 +113,7 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
     fun setMusic(id: Int, context: Context) {
         if (mediaPlayer.isPlaying)
             mediaPlayer.reset()
-        this.music = null
+        this.liveMusic.value = null
         mediaPlayer = MediaPlayer.create(context, id)
         start()
     }
@@ -129,7 +131,8 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onActivityResume() {
-        animator?.resume()
+        if (mediaPlayer.isPlaying)
+            animator?.resume()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
@@ -138,7 +141,6 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
             duration = 20000
             repeatCount = -1
             interpolator = LinearInterpolator()
-            start()
         }
     }
 
