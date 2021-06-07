@@ -3,6 +3,9 @@ package com.fcy.musicplayer
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -77,12 +80,21 @@ class PlayMusicActivity : BaseActivity() {
         binding.mrInner.setValueInner(this)
     }
 
+    private var detector: GestureDetector? = null
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (detector == null)
+            detector = GestureDetector(this, MyGestureDetector())
+        detector?.onTouchEvent(ev)
+        return super.dispatchTouchEvent(ev)
+    }
+
     override fun initArgs() {
         super.initArgs()
         intent.extras?.apply {
             id = getString("id")
         }
-        info = LocalHelper.instance.loadMusicById(id ?: "")
+        info =
+            LocalHelper.instance.loadMusicById(id ?: "") ?: MediaPlayerHelp.instance.liveMusic.value
         LoggerUtil.d("$info $id")
     }
 
@@ -92,5 +104,21 @@ class PlayMusicActivity : BaseActivity() {
         }
     }
 
+
+    inner class MyGestureDetector : GestureDetector.SimpleOnGestureListener() {
+        override fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent?,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
+            LoggerUtil.d(distanceY)
+            if (distanceY < -15) {
+                onBackPressed()
+            }
+            return super.onScroll(e1, e2, distanceX, distanceY)
+        }
+
+    }
 
 }

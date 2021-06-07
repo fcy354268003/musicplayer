@@ -3,4 +3,5 @@
     <string name="userName">用户名</string>
     <string name="logo">logo</string>
     <string name="register">立即注册</string>
+    <string name="poster">poster</string>
 </resources>

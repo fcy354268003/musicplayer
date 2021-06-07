@@ -10,6 +10,10 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+    }
+
+    override fun onResume() {
+        super.onResume()
         Handler().postDelayed({
             val intent: Intent = if (UserHelp.instance.validateLogin(this)) {
                 Intent(this, MainActivity::class.java)

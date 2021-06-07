@@ -1,11 +1,13 @@
 package com.fcy.musicplayer
 
+import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Pair
 import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -103,11 +105,18 @@ class MainActivity : BaseActivity() {
                         tvMakerName.text = t?.author
                         tvMusicName.text = t?.name
                         requestManager?.load(t?.poster)?.into(squareImagineView)
-                    }
-                    holder.itemView.setOnClickListener {
-                        val intent = Intent(this@MainActivity, PlayMusicActivity::class.java)
-                        intent.putExtra("id", t?.musicId)
-                        startActivity(intent)
+                        csl.setOnClickListener {
+                            val transBundle =
+                                ActivityOptions.makeSceneTransitionAnimation(
+                                    this@MainActivity,
+                                    Pair.create(squareImagineView, "poster"),
+                                    Pair.create(tvMakerName, "maker"),
+                                    Pair.create(tvMusicName, "musicName")
+                                ).toBundle()
+                            val intent = Intent(this@MainActivity, PlayMusicActivity::class.java)
+                            intent.putExtra("id", t?.musicId)
+                            startActivity(intent, transBundle)
+                        }
                     }
                 }
             }
@@ -169,7 +178,7 @@ class MainActivity : BaseActivity() {
             width = WindowManager.LayoutParams.MATCH_PARENT
             height = WindowManager.LayoutParams.WRAP_CONTENT
             flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-            verticalMargin = 0.95f
+            verticalMargin = 0.7f
         }
         val musicRegulator = MusicRegulator(this, null).apply {
             background = ColorDrawable(Color.GRAY)
@@ -179,6 +188,19 @@ class MainActivity : BaseActivity() {
             setValueOuter(this@MainActivity)
         }
         manager.addView(musicRegulator, la)
+        val intent = Intent(this, PlayMusicActivity::class.java)
+        musicRegulator.binding.civ.setOnClickListener { view ->
+            startActivity(
+                intent,
+                ActivityOptions.makeSceneTransitionAnimation(
+                    this,
+                    Pair.create(view, "poster"),
+                    Pair.create(musicRegulator.binding.llInner, "ll_inner")
+                )
+                    .toBundle()
+            )
+        }
+
     }
 
 }

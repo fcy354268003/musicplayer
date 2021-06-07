@@ -27,7 +27,7 @@ open class MusicRegulator(context: Context, attributeSet: AttributeSet?) :
     var nextCallback: () -> Unit = {}
     var pauseCallback: () -> Unit = {}
 
-    private val binding: MusicRegulatorOuterBinding =
+    val binding: MusicRegulatorOuterBinding =
         DataBindingUtil.inflate<MusicRegulatorOuterBinding>(
             LayoutInflater.from(context),
             R.layout.music_regulator_outer,

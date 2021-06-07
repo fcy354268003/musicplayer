@@ -10,8 +10,9 @@
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:orientation="horizontal">
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp">
 
         <FrameLayout
             android:id="@+id/fl_outer"
@@ -26,7 +27,8 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/test" />
+                android:src="@drawable/test"
+                android:transitionName="@string/poster" />
 
             <TextView
                 android:id="@+id/tv_musicName"
@@ -50,11 +52,13 @@
         </FrameLayout>
 
         <LinearLayout
+            android:id="@+id/ll_inner"
             android:layout_width="0dp"
             android:layout_height="70dp"
             android:layout_weight="3"
             android:orientation="vertical"
-            android:paddingVertical="10dp">
+            android:paddingVertical="10dp"
+            android:transitionName="ll_inner">
 
             <ProgressBar
                 android:id="@+id/pb_rate"

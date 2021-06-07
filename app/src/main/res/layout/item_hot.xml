@@ -3,6 +3,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/csl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingVertical="5dp">
@@ -13,6 +14,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/radius_5"
             android:backgroundTint="@color/black"
+            android:scaleType="centerCrop"
+            android:transitionName="@string/poster"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -32,6 +35,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/sp18"
             android:textStyle="bold"
+            android:transitionName="musicName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline4"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,6 +46,7 @@
             android:layout_height="wrap_content"
             android:text="作曲家"
             android:textSize="15sp"
+            android:transitionName="maker"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline4" />

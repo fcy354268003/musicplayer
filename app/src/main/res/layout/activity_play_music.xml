@@ -56,6 +56,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp18"
             android:textStyle="bold"
+            android:transitionName="musicName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline6" />
@@ -68,6 +69,7 @@
             android:onClick="onAlbumClick"
             android:scaleType="centerCrop"
             android:src="@drawable/test"
+            android:transitionName="@string/poster"
             app:civ_border_color="@color/black"
             app:civ_border_width="50dp"
             app:layout_constraintBottom_toTopOf="@+id/guideline6"
@@ -85,6 +87,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp18"
             android:textStyle="bold"
+            android:transitionName="maker"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_musicName" />
