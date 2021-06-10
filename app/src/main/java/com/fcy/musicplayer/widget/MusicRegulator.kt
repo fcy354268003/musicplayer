@@ -1,8 +1,14 @@
 package com.fcy.musicplayer.widget
 
+import android.app.Activity
+import android.app.ActivityOptions
 import android.content.Context
+import android.content.Intent
 import android.util.AttributeSet
+import android.util.Pair
+import android.view.GestureDetector
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -11,6 +17,7 @@ import android.widget.ProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
+import com.fcy.musicplayer.PlayMusicActivity
 import com.fcy.musicplayer.R
 import com.fcy.musicplayer.databinding.MusicRegulatorBinding
 import com.fcy.musicplayer.databinding.MusicRegulatorOuterBinding
@@ -26,6 +33,8 @@ open class MusicRegulator(context: Context, attributeSet: AttributeSet?) :
     var preCallback: () -> Unit = {}
     var nextCallback: () -> Unit = {}
     var pauseCallback: () -> Unit = {}
+    var onScrollUp: () -> Unit = {}
+    private val detector: GestureDetector
 
     val binding: MusicRegulatorOuterBinding =
         DataBindingUtil.inflate<MusicRegulatorOuterBinding>(
@@ -47,6 +56,7 @@ open class MusicRegulator(context: Context, attributeSet: AttributeSet?) :
 
     init {
         addView(binding.root)
+        detector = GestureDetector(context, Detector())
     }
 
     fun setValueInner(life: LifecycleOwner) {
@@ -66,5 +76,28 @@ open class MusicRegulator(context: Context, attributeSet: AttributeSet?) :
             binding.tvMusicName.text = it.name
         }
     }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        detector.onTouchEvent(event)
+        return super.onTouchEvent(event)
+    }
+
+
+    inner class Detector : GestureDetector.SimpleOnGestureListener() {
+        override fun onScroll(
+            e1: MotionEvent?,
+            e2: MotionEvent?,
+            distanceX: Float,
+            distanceY: Float
+        ): Boolean {
+            if (distanceY > 5) {
+                onScrollUp.invoke()
+            }
+            return super.onScroll(e1, e2, distanceX, distanceY)
+        }
+
+    }
+
+
 
 }

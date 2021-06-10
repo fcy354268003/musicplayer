@@ -10,7 +10,9 @@ import android.view.animation.LinearInterpolator
 import androidx.lifecycle.*
 import com.fcy.musicplayer.databinding.ActivityPlayMusicBinding
 import com.fcy.musicplayer.db.entity.Music
+import com.fcy.musicplayer.repository.LocalHelper
 import com.fcy.musicplayer.util.LoggerUtil
+import java.util.*
 
 /**
  * 全局单例播放器
@@ -19,11 +21,13 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
     private var mediaPlayer: MediaPlayer = MediaPlayer()
     private val handler: Handler = Handler()
     val isPlaying: MutableLiveData<Boolean> = MutableLiveData()
-    private val prepareCallback: MediaPlayer.OnPreparedListener? = null
     private var binding: ActivityPlayMusicBinding? = null
     private var animator: ObjectAnimator? = null
     val process: MutableLiveData<Int> = MutableLiveData()
-    val liveMusic: MutableLiveData<Music> = MutableLiveData()//当前播放音乐
+    val liveMusic: MutableLiveData<Music> = MutableLiveData()
+    var list: MusicList? = null
+
+    //当前播放音乐
     private val delay: Long = 300L // 刷新进度条的时间间隔
 
     companion object {
@@ -39,7 +43,6 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
                 val duration = mediaPlayer.duration
                 val currentPosition = mediaPlayer.currentPosition
                 process.value = currentPosition * 10000 / duration
-                LoggerUtil.d(process.value)
                 if (mediaPlayer.isPlaying) {
                     handler.postDelayed(this, delay)
                 }
@@ -100,8 +103,17 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
         mediaPlayer.stop()
         mediaPlayer.release()
         mediaPlayer = MediaPlayer()
-
+        LoggerUtil.d(music.musicId)
         liveMusic.value = music
+        val ele = MusicList(music.musicId)
+        if (list == null) {
+            list = ele
+        } else {
+            list?.nextNode = ele
+            ele.preNode = list
+            list = ele
+        }
+
         mediaPlayer.setDataSource(context, Uri.parse(music.path))
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener { start() }
@@ -124,6 +136,7 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onActivityPause() {
         animator?.pause()
+        LoggerUtil.d("onPause")
     }
 
     /**
@@ -131,12 +144,20 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
      */
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onActivityResume() {
-        if (mediaPlayer.isPlaying)
-            animator?.resume()
+        LoggerUtil.d("===Resume${mediaPlayer.isPlaying}")
+        if (mediaPlayer.isPlaying) {
+            LoggerUtil.d("==play ${animator?.isStarted}")
+            if (animator != null && !(animator!!.isStarted)) {
+                animator!!.start()
+            } else
+                animator?.resume()
+            LoggerUtil.d("$animator")
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun onActivityCreate() {
+        LoggerUtil.d("onActivityCreate")
         animator = ObjectAnimator.ofFloat(binding?.civAlbum, "rotation", 0F, 360F).apply {
             duration = 20000
             repeatCount = -1
@@ -151,6 +172,19 @@ class MediaPlayerHelp private constructor() : LifecycleObserver {
     fun onActivityDestroy() {
         binding = null
         animator = null
+    }
+
+    fun nextMusic(): String {
+        return list?.nextNode?.id ?: LocalHelper.instance.getMusicIdRandom()
+    }
+
+    fun preMusic(): String? {
+        return list?.preNode?.id
+    }
+
+    inner class MusicList(val id: String) {
+        var preNode: MusicList? = null
+        var nextNode: MusicList? = null
     }
 
 }

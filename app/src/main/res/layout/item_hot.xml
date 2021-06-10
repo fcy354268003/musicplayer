@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
+    <data>
+
+        <variable
+            name="music"
+            type="com.fcy.musicplayer.db.entity.Music" />
+
+        <variable
+            name="help"
+            type="com.fcy.musicplayer.helps.MediaPlayerHelp" />
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/csl"
@@ -31,7 +46,7 @@
             android:id="@+id/tv_musicName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="音乐名称"
+            android:text="@{music.name}"
             android:textColor="@color/black"
             android:textSize="@dimen/sp18"
             android:textStyle="bold"
@@ -44,7 +59,7 @@
             android:id="@+id/tv_makerName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="作曲家"
+            android:text="@{music.author}"
             android:textSize="15sp"
             android:transitionName="maker"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -54,8 +69,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/play"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/play_sign"
+            android:visibility="@{TextUtils.equals(music.musicId,help.liveMusic.musicId)? View.VISIBLE: View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

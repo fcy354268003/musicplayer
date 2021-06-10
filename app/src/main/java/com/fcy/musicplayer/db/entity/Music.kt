@@ -6,10 +6,9 @@ import androidx.room.PrimaryKey
 @Entity
 data class Music(
     @PrimaryKey
-    val musicId:String,
-    val name:String,
-    val poster:String,
-    val path:String,//mp3资源路径
-    val author:String
-) {
-}
+    val musicId: String = "",
+    val name: String = "",
+    val poster: String = "",
+    val path: String = "",//mp3资源路径
+    val author: String = ""
+)

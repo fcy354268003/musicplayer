@@ -14,12 +14,14 @@ import com.fcy.musicplayer.db.entity.MusicSource
 import com.fcy.musicplayer.db.entity.User
 import com.fcy.musicplayer.helps.ApplicationHelper
 import com.fcy.musicplayer.util.LiveDataManager
+import com.fcy.musicplayer.util.LoggerUtil
 import com.fcy.musicplayer.viewmodel.LogInViewModel
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.random.Random
 
 class LocalHelper private constructor() {
     private val gson: Gson = Gson()
@@ -132,6 +134,13 @@ class LocalHelper private constructor() {
                 LiveDataManager.with<List<Music>>("music") as MutableLiveData<List<Music>>
             with.postValue(musicDao.load20())
         }
+    }
+
+    fun getMusicIdRandom(): String {
+        val loadRandomId = musicDao.loadRandomId()
+        val index = Random.nextInt(loadRandomId.size)
+        LoggerUtil.d("$index \t  ${loadRandomId[index]}")
+        return loadRandomId[index]
     }
 
     fun loadMusicById(id: String): Music? = musicDao.loadById(id)

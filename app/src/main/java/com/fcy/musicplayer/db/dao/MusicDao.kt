@@ -31,4 +31,7 @@ interface MusicDao {
     @Query("SELECT * FROM music WHERE musicId = :id")
     fun loadById(id: String): Music?
 
+    @Query("SELECT musicId FROM music")
+    fun loadRandomId():List<String>
+
 }

@@ -3,9 +3,9 @@ package com.fcy.musicplayer
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -33,17 +33,24 @@ class PlayMusicActivity : BaseActivity() {
         )
         playMusic(info)
         onContentInit()
-
-
         binding.civAlbum.setOnClickListener(mediaPlayerHelp::onAlbumClick)
         lifecycle.addObserver(MediaPlayerHelp.instance)
         binding.musicHelp = mediaPlayerHelp
         binding.mrInner.apply {
             preCallback = {
-
+                val idd = MediaPlayerHelp.instance.preMusic()
+                if (idd == null) {
+                    Toast.makeText(this@PlayMusicActivity, "这是您听的第一首歌哦", Toast.LENGTH_SHORT).show()
+                } else {
+                    this@PlayMusicActivity.id = idd
+                    val intent = Intent(this@PlayMusicActivity, PlayMusicActivity::class.java)
+                    startActivity(intent)
+                }
             }
             nextCallback = {
-
+                this@PlayMusicActivity.id = MediaPlayerHelp.instance.nextMusic()
+                val intent = Intent(this@PlayMusicActivity, PlayMusicActivity::class.java)
+                startActivity(intent)
             }
             pauseCallback = {
                 mediaPlayerHelp.onAlbumClick(null)
@@ -56,8 +63,11 @@ class PlayMusicActivity : BaseActivity() {
         /**
          * 先更新音乐信息 然后刷新界面
          */
-        initArgs()
+        info =
+            LocalHelper.instance.loadMusicById(id ?: "") ?: MediaPlayerHelp.instance.liveMusic.value
         onContentInit()
+        mediaPlayerHelp.setMusic(info, this, binding)
+        LoggerUtil.d("on New Intent$info")
     }
 
     /**
@@ -92,6 +102,7 @@ class PlayMusicActivity : BaseActivity() {
         super.initArgs()
         intent.extras?.apply {
             id = getString("id")
+            LoggerUtil.d("====$id")
         }
         info =
             LocalHelper.instance.loadMusicById(id ?: "") ?: MediaPlayerHelp.instance.liveMusic.value
