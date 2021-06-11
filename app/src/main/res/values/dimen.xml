@@ -4,5 +4,6 @@
     <dimen name="navBarHeight">56dp</dimen>
     <dimen name="navBarTitleBarSize">22dp</dimen>
     <dimen name="sp18">18sp</dimen>
+    <dimen name="sp12">12sp</dimen>
     <dimen name="inputViewHeight">40dp</dimen>
 </resources>

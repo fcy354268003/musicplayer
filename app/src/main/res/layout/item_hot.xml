@@ -35,36 +35,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.15" />
 
         <TextView
             android:id="@+id/tv_musicName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="@{music.name}"
             android:textColor="@color/black"
             android:textSize="@dimen/sp18"
             android:textStyle="bold"
             android:transitionName="musicName"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline4"
+            app:layout_constraintStart_toEndOf="@+id/squareImagineView"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_makerName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:text="@{music.author}"
             android:textSize="15sp"
             android:transitionName="maker"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline4" />
+            app:layout_constraintStart_toEndOf="@+id/squareImagineView" />
 
         <ImageView
             android:layout_width="wrap_content"

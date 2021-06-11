@@ -1,7 +1,9 @@
 package com.fcy.musicplayer
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.util.Pair
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -10,6 +12,7 @@ import com.bumptech.glide.RequestManager
 import com.fcy.musicplayer.base.BaseActivity
 import com.fcy.musicplayer.databinding.ItemHotBinding
 import com.fcy.musicplayer.db.entity.Music
+import com.fcy.musicplayer.helps.MediaPlayerHelp
 import com.fcy.musicplayer.repository.LocalHelper
 import com.fcy.musicplayer.util.LiveDataManager
 import com.fcy.musicplayer.util.LoggerUtil
@@ -26,6 +29,7 @@ class AlbumActivity : BaseActivity() {
     override fun initArgs() {
         super.initArgs()
         id = intent?.extras?.getString("id")
+        LoggerUtil.d("===$id===")
     }
 
     override fun onContentChanged() {
@@ -43,15 +47,27 @@ class AlbumActivity : BaseActivity() {
 
                 override fun bindView(holder: MyHolder, position: Int, t: Music?) {
                     (holder.binding as? ItemHotBinding)?.apply {
+                        LoggerUtil.d("bindView")
+                        lifecycleOwner = this@AlbumActivity
                         tvMakerName.text = t?.author
                         tvMusicName.text = t?.name
+                        music = t
+                        help = MediaPlayerHelp.instance
                         requestManager?.load(t?.poster)?.into(squareImagineView)
+                        csl.setOnClickListener {
+                            val transBundle =
+                                ActivityOptions.makeSceneTransitionAnimation(
+                                    this@AlbumActivity,
+                                    Pair.create(squareImagineView, "poster"),
+                                    Pair.create(tvMakerName, "maker"),
+                                    Pair.create(tvMusicName, "musicName")
+                                ).toBundle()
+                            val intent = Intent(this@AlbumActivity, PlayMusicActivity::class.java)
+                            intent.putExtra("id", t?.musicId)
+                            startActivity(intent, transBundle)
+                        }
                     }
-                    holder.itemView.setOnClickListener {
-                        val intent = Intent(this@AlbumActivity, PlayMusicActivity::class.java)
-                        intent.putExtra("id", t?.musicId)
-                        startActivity(intent)
-                    }
+
                 }
             }
             addItemDecoration(
