@@ -1,0 +1,15 @@
+object Versions {
+    const val appCompat = "1.2.0"
+    const val kotlinStdlib = "1.5.10"
+    const val ktxCore = "1.3.2"
+    const val material = "1.3.0"
+    const val constraintlayout = "2.0.4"
+    const val testJunit = "4.13.2"
+    const val androidTestJunit = "1.1.2"
+    const val androidTestespressoCore = "3.3.0"
+    const val glide = "4.12.0"
+    const val glideTransformations = "4.1.0"
+    const val circleimageview = "2.1.0"
+    const val room = "2.3.0"
+    const val gson = "2.8.7"
+}
